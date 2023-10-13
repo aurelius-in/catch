@@ -12,7 +12,7 @@
       touch-action: manipulation; /* Prevent default zoom */
     }
     #emojiList {
-      font-size: 25px;  /* Adjust the size as needed */
+      font-size: 35px;  /* Adjust the size as needed */
     }
   </style>
 </head>
@@ -28,7 +28,7 @@
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
   let basketX = canvas.width / 2;
-  const basketWidth = 80;
+  const basketWidth = 90;
   const basketHeight = 50;
   const emojiSize = 60;
   let emojis = [];
@@ -96,13 +96,14 @@ function drawEmojis() {
 }
 
   // Function to generate random emojis
-  function generateEmoji() {
-    if (remainingEmojis.length === 0) return;
+function generateEmoji() {
+  if (remainingEmojis.length === 0) return;
 
-    const randomEmoji = remainingEmojis[Math.floor(Math.random() * remainingEmojis.length)];
-    const randomX = Math.floor(Math.random() * canvas.width);
-    emojis.push({ char: randomEmoji, x: randomX, y: -emojiSize });
-  }
+  const randomEmoji = remainingEmojis[Math.floor(Math.random() * remainingEmojis.length)];
+  const randomX = Math.floor(Math.random() * (canvas.width - emojiSize)); // Adjusted this line
+  emojis.push({ char: randomEmoji, x: randomX, y: -emojiSize });
+}
+
 
   // Main game loop
   function gameLoop() {
