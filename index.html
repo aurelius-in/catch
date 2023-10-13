@@ -62,34 +62,38 @@
   }
 
   // Function to draw emojis
-  function drawEmojis() {
-    emojis.forEach((emoji, index) => {
-      ctx.font = `${emojiSize}px Arial`;
-      ctx.fillText(emoji.char, emoji.x, emoji.y);
-      emoji.y += 1.67;
+function drawEmojis() {
+  emojis.forEach((emoji, index) => {
+    ctx.font = `${emojiSize}px Arial`;
+    ctx.fillText(emoji.char, emoji.x, emoji.y);
+    emoji.y += 1.67;
 
-      // Check for collision with basket
-      if (
-        emoji.y >= canvas.height - basketHeight &&
-        emoji.y <= canvas.height &&
-        emoji.x >= basketX &&
-        emoji.x <= basketX + basketWidth
-      ) {
-        // Remove emoji from remaining emojis and update the display
-        const emojiIndex = remainingEmojis.indexOf(emoji.char);
-        if (emojiIndex !== -1) {
-          remainingEmojis.splice(emojiIndex, 1);
-          document.getElementById('emojiList').innerText = remainingEmojis.join(' ');
-        }
-        emojis.splice(index, 1);
+    // Check for collision with basket
+    if (
+      emoji.y >= canvas.height - basketHeight &&
+      emoji.y <= canvas.height &&
+      emoji.x >= basketX &&
+      emoji.x <= basketX + basketWidth
+    ) {
+      // Remove emoji from remaining emojis and update the display
+      const emojiIndex = remainingEmojis.indexOf(emoji.char);
+      if (emojiIndex !== -1) {
+        remainingEmojis.splice(emojiIndex, 1);
+        document.getElementById('emojiList').innerText = remainingEmojis.join(' ');
       }
+      emojis.splice(index, 1);
+    }
 
-      // Remove emojis that are fully out of canvas
-      if (emoji.y > canvas.height + emojiSize) {
-        emojis.splice(index, 1);
+    // Remove emojis that are fully out of canvas and add them back to remaining emojis
+    if (emoji.y > canvas.height + emojiSize) {
+      emojis.splice(index, 1);
+      if (!remainingEmojis.includes(emoji.char)) {
+        remainingEmojis.push(emoji.char);
+        document.getElementById('emojiList').innerText = remainingEmojis.join(' ');
       }
-    });
-  }
+    }
+  });
+}
 
   // Function to generate random emojis
   function generateEmoji() {
