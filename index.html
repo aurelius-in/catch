@@ -11,27 +11,27 @@
 <body>
 
 <h1>Emoji Catcher</h1>
-<canvas id="gameCanvas" width="800" height="600"></canvas>
+<canvas id="gameCanvas" width="400" height="800"></canvas>
 
 <script>
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
   let basketX = canvas.width / 2;
   const basketWidth = 50;
-  const basketHeight = 10;
+  const basketHeight = 30;
   const emojiSize = 30;
   let emojis = [];
   let score = 0;
 
-  // Event listener for mouse movement
-  canvas.addEventListener('mousemove', (e) => {
+  // Event listener for touch movement
+  canvas.addEventListener('touchmove', (e) => {
     const rect = canvas.getBoundingClientRect();
-    basketX = e.clientX - rect.left - basketWidth / 2;
+    basketX = e.touches[0].clientX - rect.left - basketWidth / 2;
   });
 
   // Function to draw basket
   function drawBasket() {
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = '#8B4513'; // Brown color for basket
     ctx.fillRect(basketX, canvas.height - basketHeight, basketWidth, basketHeight);
   }
 
@@ -40,7 +40,7 @@
     emojis.forEach((emoji, index) => {
       ctx.font = `${emojiSize}px Arial`;
       ctx.fillText(emoji.char, emoji.x, emoji.y);
-      emoji.y += 5;
+      emoji.y += 1.67; // 3X slower
 
       // Check for collision with basket
       if (
@@ -48,7 +48,11 @@
         emoji.x >= basketX &&
         emoji.x <= basketX + basketWidth
       ) {
-        score++;
+        if (emoji.char === '💩') {
+          score -= 2;
+        } else {
+          score += emoji.value;
+        }
         emojis.splice(index, 1);
       }
 
@@ -61,10 +65,16 @@
 
   // Function to generate random emojis
   function generateEmoji() {
-    const emojiChars = ['😀', '😍', '😎', '🤓'];
+    const emojiChars = [
+      { char: '😀', value: 1 },
+      { char: '😍', value: 2 },
+      { char: '😎', value: 3 },
+      { char: '🤓', value: 4 },
+      { char: '💩', value: 0 }
+    ];
     const randomEmoji = emojiChars[Math.floor(Math.random() * emojiChars.length)];
     const randomX = Math.floor(Math.random() * canvas.width);
-    emojis.push({ char: randomEmoji, x: randomX, y: 0 });
+    emojis.push({ char: randomEmoji.char, x: randomX, y: 0, value: randomEmoji.value });
   }
 
   // Main game loop
@@ -77,15 +87,13 @@
     ctx.font = '20px Arial';
     ctx.fillText(`Score: ${score}`, 10, 20);
 
-    // Generate new emoji every 100 frames
-    if (Math.floor(Math.random() * 100) < 5) {
-      generateEmoji();
-    }
-
     requestAnimationFrame(gameLoop);
   }
 
   gameLoop();
+
+  // Generate new emoji every 2 seconds
+  setInterval(generateEmoji, 2000);
 </script>
 
 </body>
