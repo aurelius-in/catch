@@ -6,6 +6,9 @@
     canvas {
       border: 2px solid black;
     }
+    body {
+      touch-action: manipulation; /* Prevent default zoom */
+    }
   </style>
 </head>
 <body>
@@ -25,6 +28,7 @@
 
   // Event listener for touch movement
   canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault(); // Prevent default action like zoom
     const rect = canvas.getBoundingClientRect();
     basketX = e.touches[0].clientX - rect.left - basketWidth / 2;
   });
