@@ -4,9 +4,11 @@
   <title>Emoji Catcher</title>
   <style>
     canvas {
-      border: 2px solid black;
+      border: 0px;
     }
     body {
+      margin: 0;
+      padding: 0;
       touch-action: manipulation; /* Prevent default zoom */
     }
   </style>
@@ -14,7 +16,7 @@
 <body>
 
 <h1>Emoji Catcher</h1>
-<canvas id="gameCanvas" width="400" height="800"></canvas>
+<canvas id="gameCanvas" width="500" height="900"></canvas>
 
 <script>
   const canvas = document.getElementById('gameCanvas');
