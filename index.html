@@ -35,8 +35,24 @@
 
   // Function to draw basket
   function drawBasket() {
+    // Draw trapezoid
+    ctx.beginPath();
+    ctx.moveTo(basketX, canvas.height);
+    ctx.lineTo(basketX + basketWidth, canvas.height);
+    ctx.lineTo(basketX + basketWidth - 10, canvas.height - basketHeight);
+    ctx.lineTo(basketX + 10, canvas.height - basketHeight);
+    ctx.closePath();
     ctx.fillStyle = '#8B4513'; // Brown color for basket
-    ctx.fillRect(basketX, canvas.height - basketHeight, basketWidth, basketHeight);
+    ctx.fill();
+    ctx.stroke();
+
+    // Draw criss-cross lines
+    ctx.beginPath();
+    ctx.moveTo(basketX + 10, canvas.height - basketHeight);
+    ctx.lineTo(basketX + basketWidth - 10, canvas.height);
+    ctx.moveTo(basketX + basketWidth - 10, canvas.height - basketHeight);
+    ctx.lineTo(basketX + 10, canvas.height);
+    ctx.stroke();
   }
 
   // Function to draw emojis
