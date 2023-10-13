@@ -16,15 +16,15 @@
 <body>
 
 <h1>Emoji Catcher</h1>
-<canvas id="gameCanvas" width="500" height="900"></canvas>
+<canvas id="gameCanvas" width="800" height="1600"></canvas>
 
 <script>
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
   let basketX = canvas.width / 2;
-  const basketWidth = 50;
-  const basketHeight = 30;
-  const emojiSize = 30;
+  const basketWidth = 60;
+  const basketHeight = 40;
+  const emojiSize = 50;
   let emojis = [];
   let score = 0;
 
@@ -44,7 +44,7 @@
     ctx.lineTo(basketX + basketWidth - 10, canvas.height - basketHeight);
     ctx.lineTo(basketX + 10, canvas.height - basketHeight);
     ctx.closePath();
-    ctx.fillStyle = '#8B4513'; // Brown color for basket
+    ctx.fillStyle = '#7C3424'; // color for basket
     ctx.fill();
     ctx.stroke();
 
