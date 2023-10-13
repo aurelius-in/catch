@@ -16,6 +16,9 @@
 <body>
 
 <h1>Emoji Catcher</h1>
+<div id="emojiList">
+  <!-- Emojis will be populated here -->
+</div>
 <canvas id="gameCanvas" width="800" height="1600"></canvas>
 
 <script>
@@ -26,90 +29,81 @@
   const basketHeight = 40;
   const emojiSize = 50;
   let emojis = [];
-  let score = 0;
+  let remainingEmojis = [
+    '🤔', '🙂', '🙃', '👀', '🙄', '😉', '🤩', '😗', '☺️', '🤑', '🥰', '😬',
+    '😷', '🤠', '🥳', '🥸', '😎', '🤓', '😭', '😢', '😥', '😱', '😨', '🤠', '🤯',
+    '🤢', '🤒', '💩', '🙈', '🙉', '🙊', '😻', '💋', '🖖', '✋️', '🤏', '👉', '🧠',
+    '🦷', '🙏', '✌️', '💤', '☠️', '💀', '🥶', '🤐', '😝', '🤣', '😂', '😁', '😶'
+  ];
+
+  // Populate the emoji list at the top of the screen
+  document.getElementById('emojiList').innerText = remainingEmojis.join(' ');
 
   // Event listener for touch movement
   canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault(); // Prevent default action like zoom
+    e.preventDefault();
     const rect = canvas.getBoundingClientRect();
     basketX = e.touches[0].clientX - rect.left - basketWidth / 2;
   });
 
   // Function to draw basket
-function drawBasket() {
-  // Draw trapezoid
-  ctx.beginPath();
-  ctx.moveTo(basketX + 10, canvas.height);  // Bottom left corner
-  ctx.lineTo(basketX + basketWidth - 10, canvas.height);  // Bottom right corner
-  ctx.lineTo(basketX + basketWidth, canvas.height - basketHeight);  // Top right corner
-  ctx.lineTo(basketX, canvas.height - basketHeight);  // Top left corner
-  ctx.closePath();
-  ctx.fillStyle = '#7C3424'; // color for basket
-  ctx.fill();
-  ctx.stroke();
+  function drawBasket() {
+    // Draw trapezoid
+    ctx.beginPath();
+    ctx.moveTo(basketX + 10, canvas.height);
+    ctx.lineTo(basketX + basketWidth - 10, canvas.height);
+    ctx.lineTo(basketX + basketWidth, canvas.height - basketHeight);
+    ctx.lineTo(basketX, canvas.height - basketHeight);
+    ctx.closePath();
+    ctx.fillStyle = '#7C3424';
+    ctx.fill();
+    ctx.stroke();
+  }
 
-  // Draw criss-cross lines
-  ctx.beginPath();
-  ctx.moveTo(basketX + 10, canvas.height);
-  ctx.lineTo(basketX + basketWidth, canvas.height - basketHeight);
-  ctx.moveTo(basketX, canvas.height - basketHeight);
-  ctx.lineTo(basketX + basketWidth - 10, canvas.height);
-  ctx.stroke();
-}
+  // Function to draw emojis
+  function drawEmojis() {
+    emojis.forEach((emoji, index) => {
+      ctx.font = `${emojiSize}px Arial`;
+      ctx.fillText(emoji.char, emoji.x, emoji.y);
+      emoji.y += 1.67;
 
-// Function to draw emojis
-function drawEmojis() {
-  emojis.forEach((emoji, index) => {
-    ctx.font = `${emojiSize}px Arial`;
-    ctx.fillText(emoji.char, emoji.x, emoji.y);
-    emoji.y += 1.67; // 3X slower
-
-    // Check for collision with basket
-    if (
-      emoji.y >= canvas.height - basketHeight &&
-      emoji.y <= canvas.height &&
-      emoji.x >= basketX &&
-      emoji.x <= basketX + basketWidth
-    ) {
-      if (emoji.char === '💩') {
-        score -= 2;
-      } else {
-        score += emoji.value;
+      // Check for collision with basket
+      if (
+        emoji.y >= canvas.height - basketHeight &&
+        emoji.y <= canvas.height &&
+        emoji.x >= basketX &&
+        emoji.x <= basketX + basketWidth
+      ) {
+        // Remove emoji from remaining emojis and update the display
+        const emojiIndex = remainingEmojis.indexOf(emoji.char);
+        if (emojiIndex !== -1) {
+          remainingEmojis.splice(emojiIndex, 1);
+          document.getElementById('emojiList').innerText = remainingEmojis.join(' ');
+        }
+        emojis.splice(index, 1);
       }
-      emojis.splice(index, 1);
-    }
 
-    // Remove emojis that are fully out of canvas
-    if (emoji.y > canvas.height + emojiSize) {
-      emojis.splice(index, 1);
-    }
-  });
-}
+      // Remove emojis that are fully out of canvas
+      if (emoji.y > canvas.height + emojiSize) {
+        emojis.splice(index, 1);
+      }
+    });
+  }
 
-// Function to generate random emojis
-function generateEmoji() {
-  const emojiChars = [
-    { char: '😀', value: 1 },
-    { char: '😍', value: 2 },
-    { char: '😎', value: 3 },
-    { char: '🤓', value: 4 },
-    { char: '💩', value: 0 }
-  ];
-  const randomEmoji = emojiChars[Math.floor(Math.random() * emojiChars.length)];
-  const randomX = Math.floor(Math.random() * canvas.width);
-  emojis.push({ char: randomEmoji.char, x: randomX, y: -emojiSize, value: randomEmoji.value });
-}
+  // Function to generate random emojis
+  function generateEmoji() {
+    if (remainingEmojis.length === 0) return;
+
+    const randomEmoji = remainingEmojis[Math.floor(Math.random() * remainingEmojis.length)];
+    const randomX = Math.floor(Math.random() * canvas.width);
+    emojis.push({ char: randomEmoji, x: randomX, y: -emojiSize });
+  }
 
   // Main game loop
   function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBasket();
     drawEmojis();
-
-    // Display score
-    ctx.font = '20px Arial';
-    ctx.fillText(`Score: ${score}`, 10, 20);
-
     requestAnimationFrame(gameLoop);
   }
 
