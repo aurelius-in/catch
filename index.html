@@ -11,8 +11,9 @@
       padding: 0;
       touch-action: manipulation; /* Prevent default zoom */
     }
+    
     #emojiList {
-      font-size: 35px;  /* Adjust the size as needed */
+      font-size: 30px;  /* Adjust the size as needed */
     }
   </style>
 </head>
@@ -22,7 +23,7 @@
 <div id="emojiList">
   <!-- Emojis will be populated here -->
 </div>
-<canvas id="gameCanvas" width="800" height="1500"></canvas>
+<canvas id="gameCanvas" width="850" height="1450"></canvas>
 
 <script>
   const canvas = document.getElementById('gameCanvas');
@@ -34,7 +35,7 @@
   let emojis = [];
   let remainingEmojis = [
     '🤔', '🙂', '🙃', '👀', '🙄', '😉', '🤩', '😗', '☺️', '🤑', '🥰', '😬', '🤠', '🥳', '🥸', '😎', '🤓', '😭', '😢', '😱', '😨', '🤠', '🤯',
-    '🤢', '🤒', '💩', '🙈', '🙉', '🙊', '😻', '💋', '🖖', '✋️', '🤏', '👉', '🧠', '🦷', '🙏', '✌️', '💤', '☠️', '🥶', '🤐', '😝', '🤣', '😁',
+    '🤢', '🤒', '💩','🙉', '😻', '💋', '🖖', '✋️', '🤏', '👉', '🧠', '🦷', '🙏', '✌️', '💤', '☠️', '🥶', '🤐', '😝', '🤣', '😁',
   ];
 
   // Populate the emoji list at the top of the screen
