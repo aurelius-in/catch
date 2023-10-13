@@ -36,27 +36,27 @@
   });
 
   // Function to draw basket
-  function drawBasket() {
-    // Draw trapezoid
-    ctx.beginPath();
-    ctx.moveTo(basketX, canvas.height);
-    ctx.lineTo(basketX + basketWidth, canvas.height);
-    ctx.lineTo(basketX + basketWidth - 10, canvas.height - basketHeight);
-    ctx.lineTo(basketX + 10, canvas.height - basketHeight);
-    ctx.closePath();
-    ctx.fillStyle = '#7C3424'; // color for basket
-    ctx.fill();
-    ctx.stroke();
+function drawBasket() {
+  // Draw trapezoid
+  ctx.beginPath();
+  ctx.moveTo(basketX + 10, canvas.height);  // Bottom left corner
+  ctx.lineTo(basketX + basketWidth - 10, canvas.height);  // Bottom right corner
+  ctx.lineTo(basketX + basketWidth, canvas.height - basketHeight);  // Top right corner
+  ctx.lineTo(basketX, canvas.height - basketHeight);  // Top left corner
+  ctx.closePath();
+  ctx.fillStyle = '#7C3424'; // color for basket
+  ctx.fill();
+  ctx.stroke();
 
-    // Draw criss-cross lines
-    ctx.beginPath();
-    ctx.moveTo(basketX + 10, canvas.height - basketHeight);
-    ctx.lineTo(basketX + basketWidth - 10, canvas.height);
-    ctx.moveTo(basketX + basketWidth - 10, canvas.height - basketHeight);
-    ctx.lineTo(basketX + 10, canvas.height);
-    ctx.stroke();
-  }
-  
+  // Draw criss-cross lines
+  ctx.beginPath();
+  ctx.moveTo(basketX + 10, canvas.height);
+  ctx.lineTo(basketX + basketWidth, canvas.height - basketHeight);
+  ctx.moveTo(basketX, canvas.height - basketHeight);
+  ctx.lineTo(basketX + basketWidth - 10, canvas.height);
+  ctx.stroke();
+}
+
 // Function to draw emojis
 function drawEmojis() {
   emojis.forEach((emoji, index) => {
